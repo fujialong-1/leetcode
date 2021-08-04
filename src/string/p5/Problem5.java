@@ -6,7 +6,7 @@ public class Problem5 {
 //        String s = " ";
 //        char c = ' ';
 //        System.out.println(s.equals(String.valueOf(c)));
-        StringBuffer str = new StringBuffer("We%20are%20happy.");
+        StringBuffer str = new StringBuffer("We are happy.");
         System.out.println(solution.replaceSpace(str));
     }
 }
