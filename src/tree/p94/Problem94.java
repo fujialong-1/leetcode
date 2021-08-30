@@ -8,6 +8,11 @@ import java.util.Stack;
 
 public class Problem94 {
 
+    public static void main(String[] args) {
+
+
+    }
+
 }
 
 
@@ -30,13 +35,33 @@ class Solution {
     }*/
 
     public List<Integer> inorderTraversal(TreeNode root) {
+
         List<Integer> result = new ArrayList<>();
-        if (root == null){
-            return result;
-        }
-        Stack<TreeNode> stack = new Stack<>();
+
+        // 节点自身和它的右子树都没有被访问到的节点地址
+        Stack<TreeNode> s = new Stack<>();
+
         TreeNode cur = root;
-        while (cur != null || !stack.isEmpty()){
+
+        while (cur != null || !s.isEmpty()) {
+
+            while (cur != null) {
+                s.push(cur);
+                cur = cur.left;
+            }
+
+            cur = s.peek();
+            s.pop();
+            result.add(cur.val);
+
+            cur = cur.right;
+
+        }
+
+        return result;
+
+
+        /*while (cur != null || !stack.isEmpty()){
             if (cur != null){
                 stack.push(cur);
                 cur = cur.left;
@@ -46,7 +71,7 @@ class Solution {
                 cur = cur.right;
             }
         }
-        return result;
+        return result;*/
     }
 }
 
