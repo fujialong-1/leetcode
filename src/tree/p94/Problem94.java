@@ -17,7 +17,6 @@ public class Problem94 {
 
 
 class Solution {
-
     // 中序遍历·递归
     /*public List<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
@@ -57,9 +56,7 @@ class Solution {
             cur = cur.right;
 
         }
-
         return result;
-
 
         /*while (cur != null || !stack.isEmpty()){
             if (cur != null){
