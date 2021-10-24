@@ -42,5 +42,5 @@ public class Problem72 {
     int min(int a, int b, int c) {
         return Math.min(a, Math.min(b, c));
     }
-    
+
 }

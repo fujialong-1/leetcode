@@ -19,7 +19,9 @@ public class QuickSort {
     }
 
     public static void quickSort(int[] arr, int low, int high) {
-        if (low > high) return;// 这一步很重要
+        if (low > high) {
+            return;// 这一步很重要
+        }
         int i, j, temp;
         i = low;
         j = high;
@@ -32,7 +34,9 @@ public class QuickSort {
             while (i < j && arr[i] <= temp) {
                 i++;
             }
-            if (i < j) swap(arr, i, j);
+            if (i < j) {
+                swap(arr, i, j);
+            }
         }
 
         /*arr[low] = arr[i];
