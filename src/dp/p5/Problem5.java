@@ -4,46 +4,27 @@ public class Problem5 {
 
     public static void main(String[] args) {
 
-
         System.out.println(longestPalindrome("cbbbc"));
-
-
 
     }
 
     public static String longestPalindrome(String s) {
-
-        int length = s.length();
-        if (length < 2) {
-            return s;
-        }
-
-        // 定义动规数组 dp[i][j]表示s[i~j]子串是否为回文串
-        boolean[][] dp = new boolean[length][length];
-        // 初始化
-        for (int i = 0; i < length; i++) {
-            dp[i][i] = true;
-        }
-        int maxLength = 0;
-        int[] res = new int[2];
-
-        for (int L = 2; L <= length; L++) {
-            for (int i = 0; i <= length - L; i++) {
-                int j = i + L - 1;
-                if (L == 2) {
-                    dp[i][j] = (s.charAt(i) == s.charAt(j));
-                } else {
-                    dp[i][j] = dp[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
+        int n = s.length();
+        int res, left, right;
+        res = left = right = 0;
+        for(int i = 0; i < 2*n-1; i++) {
+            int l = i/2;
+            int r = i/2 + i%2;
+            while(l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
+                if(r-l+1 > res) {
+                    res = r-l+1;
+                    left = l;
+                    right = r;
                 }
-                if (dp[i][j]) {
-                    if (L > maxLength) {
-                        maxLength = L;
-                        res = new int[]{i, j};
-                    }
-                }
+                l--;
+                r++;
             }
         }
-        //System.out.println(dp[0][4]);
-        return s.substring(res[0], res[1] + 1);
+        return s.substring(left, right+1);
     }
 }
