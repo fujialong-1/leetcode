@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Problem17 {
 
-    public static Map<Character, String> map = new HashMap<Character, String>();
+    public static Map<Character, String> map = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -16,12 +16,13 @@ public class Problem17 {
         for (String item : res) {
             System.out.println(item);
         }
+        System.out.println(Integer.valueOf(digits.charAt(1)));
 
     }
 
     public static List<String> letterCombinations(String digits) {
 
-        List<String> res = new LinkedList<String>();
+        List<String> res = new LinkedList<>();
 
         if (digits.length() == 0) return res;
         //Map<Character, String> map = new HashMap<Character, String>();
@@ -54,6 +55,7 @@ public class Problem17 {
                 sb.append(temp.charAt(j));
                 permute(res, s, sb, i+1);
                 sb.deleteCharAt(sb.length() - 1);
+
             }
 
             /*if (s.charAt(i) == '7') {

@@ -5,6 +5,9 @@ import java.util.List;
 
 public class Problem93 {
 
+    static List<String> result = new LinkedList<>();
+    static StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) {
 
 
@@ -26,63 +29,61 @@ public class Problem93 {
         for (String item:res) {
             System.out.println(item);
         }*/
-
+//        String s = "25525511135";
+//        restoreIpAddresses(s);
+        System.out.println(isValid("010"));
+        System.out.println(isValid("255"));
+        System.out.println(isValid("2552"));
+        restoreIpAddresses("010010");
     }
+
+
 
     public static List<String> restoreIpAddresses(String s) {
-
-        // 将字符串拆成4组
-        List<String> res = new LinkedList<String>();
-
-        if (s.length() > 12 || s.length() < 4) {
-            return res;
-        }
-
-        //List<String> track = new LinkedList<String>();
-
-        StringBuilder sb = new StringBuilder();
-
-        permute(res, sb, s, 0);
-
-        return res;
-
+        backtracking(s, 0, 0);
+        return result;
     }
+    public static void backtracking(String s, int index, int length) {
 
-    public static void permute(List<String> res, StringBuilder sb, String s, int index) {
-
-
-        // 终止条件
-        if ((sb.length() - 4) == s.length() && index == s.length()) {
-            sb.deleteCharAt(sb.length()-1);
-            res.add(sb.toString());
+        if(length > 4) {
             return;
         }
-
-        for (int i = index+1; i <= s.length(); i++) {
-            String temp = s.substring(index, i);
-            if (isValid(temp)) {
-                int start = sb.length();
-                sb.append(temp);
-                sb.append(".");
-                permute(res, sb, s, i);
-                sb.delete(start, sb.length());
+        if(length == 4 && index < s.length()) {
+            return;
+        }
+        if(length == 4 && index == s.length()) {
+            result.add(sb.toString());
+            return;
+        }
+        for(int i = index; i < index + 3 && i < s.length(); i++) {
+            if(isValid(s.substring(index, i+1))) {
+                int sbLength = sb.length();
+                if(length == 3) {
+                    sb.append(s.substring(index, i+1));
+                    backtracking(s, i+1, length+1);
+                    sb.delete(sbLength, sbLength+i-index+1);
+                } else {
+                    sb.append(s.substring(index, i+1));
+                    sb.append('.');
+                    backtracking(s, i+1, length+1);
+                    sb.delete(sbLength, sbLength+i-index+2);
+                }
             }
         }
     }
-
-    public static boolean isValid(String target) {
-        if (target.length() >= 4) {
-            return false;
-        } else if (target.length() == 1) {
+    public static boolean isValid(String s) {
+        if(s.length() == 1) {
             return true;
-        } else if (target.length() == 2) {
-            return target.charAt(0) != '0';
         } else {
-            if (target.charAt(0) == '0') {
+            if(s.charAt(0) == '0') {
                 return false;
             } else {
-                int num = Integer.parseInt(target);
-                return num <= 255;
+                int temp = Integer.valueOf(s);
+                if(temp <= 255) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
