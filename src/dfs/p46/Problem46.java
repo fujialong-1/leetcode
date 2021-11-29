@@ -5,12 +5,14 @@ import java.util.List;
 
 public class Problem46 {
 
-    List<List<Integer>> res = new LinkedList<>();
+
 
     public static void main(String[] args) {
 
     }
 
+    List<List<Integer>> res = new LinkedList<>();
+    LinkedList<Integer> track = new LinkedList<>();
 
     /**
      * 主函数，输入一组不重复的数字，返回它们的全排列
@@ -19,7 +21,6 @@ public class Problem46 {
      */
     public List<List<Integer>> permute(int[] nums) {
         // 记录「路径」
-        LinkedList<Integer> track = new LinkedList<>();
         backtrack(nums, track);
         return res;
     }
@@ -29,7 +30,6 @@ public class Problem46 {
     // 结束条件：nums 中的元素全都在 track 中出现
 
     /**
-     *
      * @param nums
      * @param track
      */
