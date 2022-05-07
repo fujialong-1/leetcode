@@ -19,33 +19,54 @@ public class QuickSort {
     }
 
     public static void quickSort(int[] arr, int low, int high) {
-        if (low > high) {
-            return;// 这一步很重要
+        if(low > high) {
+            return;
         }
-        int i, j, temp;
-        i = low;
-        j = high;
-        temp = arr[low];
+        int i = low;
+        int j = high;
+        int temp = arr[low];
 
         while (i < j) {
-            while (i < j && arr[j] >= temp) {
-                j--;
-            }
-            while (i < j && arr[i] <= temp) {
+            while (i < j && arr[i] >= temp) {
                 i++;
+            }
+            while (i < j && arr[j] <= temp) {
+                j--;
             }
             if (i < j) {
                 swap(arr, i, j);
             }
         }
-
-        /*arr[low] = arr[i];
-        arr[i] = temp;*/
-
         swap(arr, low, i);
-
-        quickSort(arr, low, i - 1);
-        quickSort(arr, i + 1, high);
+        quickSort(arr, low, i-1);
+        quickSort(arr, i+1, high);
+        //        if (low > high) {
+//            return;// 这一步很重要
+//        }
+//        int i, j, temp;
+//        i = low;
+//        j = high;
+//        temp = arr[low];
+//
+//        while (i < j) {
+//            while (i < j && arr[j] >= temp) {
+//                j--;
+//            }
+//            while (i < j && arr[i] <= temp) {
+//                i++;
+//            }
+//            if (i < j) {
+//                swap(arr, i, j);
+//            }
+//        }
+//
+//        /*arr[low] = arr[i];
+//        arr[i] = temp;*/
+//
+//        swap(arr, low, i);
+//
+//        quickSort(arr, low, i - 1);
+//        quickSort(arr, i + 1, high);
     }
 
     public static void swap (int[] a, int i, int j) {
