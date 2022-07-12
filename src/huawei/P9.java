@@ -11,51 +11,115 @@ public class P9 {
 
     public static void main(String[] args) {
 
-        Scanner cin = new Scanner(System.in, StandardCharsets.UTF_8.name());
-        int recordNum = Integer.valueOf(cin.nextLine());
-        List<String> records = new ArrayList<>(recordNum);
-        for (int i = 0; i < recordNum; i++) {
-            records.add(cin.nextLine());
-        }
-        cin.close();
+        List<String> records = new LinkedList<>();
+        records.add("C 13300000000");
+        records.add("W 13144444444");
+        records.add("C 13144444444");
+        records.add("C 03712832444");
+        records.add("C 03712832233");
+        records.add("W 03712832*");
+        records.add("C 03712832444");
         String[][] results = getPhoneRecord(records);
         for (String[] result : results) {
             System.out.println(String.join(" ", Arrays.asList(result)));
         }
+
+//        Scanner cin = new Scanner(System.in, StandardCharsets.UTF_8.name());
+//        int recordNum = Integer.valueOf(cin.nextLine());
+//        List<String> records = new ArrayList<>(recordNum);
+//        for (int i = 0; i < recordNum; i++) {
+//            records.add(cin.nextLine());
+//        }
+//        cin.close();
+//        String[][] results = getPhoneRecord(records);
+//        for (String[] result : results) {
+//            System.out.println(String.join(" ", Arrays.asList(result)));
+//        }
     }
 
     private static String[][] getPhoneRecord(List<String> records) {
-        // 在此补充你的代码
-        // 记录每一个号码的接通和拒接次数
-        // 如果号码在白名单中，接通
-        // 不在白名单中，拒接
-        // 关键问题在于如何判断一个号码在不在白名单中
-        // 对于号码后面没有*号的，通过hashSet直接判断
-        // 对于有*号的，利用字符串匹配原则判断
-        // 还得准备一个电话白名单
-        // 用来存放结果，一个号码对应一个数组，数组记录接通和拒绝的次数
-        // 拒绝的次数等于C的次数减去W的次数
+
+        // 保存结果
+        // String对应号码，int[]对应接通次数和拒接次数
+        Map<String, Integer[]> result = new HashMap<>();
+
+        // 用来记录号码出现的顺序
+        List<String> phone = new ArrayList<>();
 
         // 号码白名单，用来记录完整的号码
-        HashSet<String> passNumber = new HashSet<>();
-        // 号码白名单，用来记录带有通配符的号码
+        Set<String> passNumber = new HashSet<>();
+        // 通配符号码白名单，用来记录带有通配符的号码
         List<String> passNumberWithWildcard = new LinkedList<>();
 
         for (String item : records) {
+
             String[] strings = item.split(" ");
-            // TODO
+
+            // 如果呼入代码为C
             if ("C".equals(strings[0])) {
+                if (!phone.contains(strings[1])) {
+                    phone.add(strings[1]);
+                }
+
+                // 如果号码在号码白名单中，接通
                 if (passNumber.contains(strings[1])) {
 
+                    if (result.containsKey(strings[1])) {
+                        Integer[] ints = result.get(strings[1]);
+                        ints[0]++;
+                        result.put(strings[1], ints);
+                    } else {
+                        result.put(strings[1], new Integer[]{1, 0});
+                    }
+                }
+                // 如果号码不在号码白名单中
+                else {
+                    boolean flag = false;
+                    for (String string : passNumberWithWildcard) {
+                        String num = string.substring(0, string.length() - 1);
+                        if (strings[1].contains(num) && strings[1].indexOf(num) == 0) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    // 如果号码在通配符号码白名单中，接通
+                    if (flag) {
+                        if (result.containsKey(strings[1])) {
+                            Integer[] ints = result.get(strings[1]);
+                            ints[0]++;
+                            result.put(strings[1], ints);
+                        } else {
+                            result.put(strings[1], new Integer[]{1, 0});
+                        }
+                    }
+                    // 不在，拒接
+                    else {
+                        if (result.containsKey(strings[1])) {
+                            Integer[] ints = result.get(strings[1]);
+                            ints[1]++;
+                            result.put(strings[1], ints);
+                        } else {
+                            result.put(strings[1], new Integer[]{0, 1});
+                        }
+                    }
                 }
             } else if ("W".equals(strings[0])) {
-
+                if (strings[1].endsWith("*")) {
+                    passNumberWithWildcard.add(strings[1]);
+                } else {
+                    passNumber.add(strings[1]);
+                }
             }
         }
-
-        // 这个用来记录什么，每一个号码对应什么，对应一个数组，这个数组应该包含什么，包含一个出现次序编号，接通次数和拒接次数
-        Map<String, int[]> result = new HashMap<>();
-
-        return new String[0][0];
+        int size = result.size();
+        String[][] newResult = new String[size][3];
+        for (int i = 0; i < size; i++) {
+            String key = phone.get(i);
+            Integer[] ints = result.get(key);
+            newResult[i][0] = key;
+            newResult[i][1] = String.valueOf(ints[0]);
+            newResult[i][2] = String.valueOf(ints[1]);
+        }
+        return newResult;
     }
 }
